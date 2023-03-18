@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Notification from 'components/Notification/Notification';
@@ -10,39 +9,44 @@ const firstLetterToUpperCase = letter => {
   return letter.slice(0, 1).toUpperCase() + letter.slice(1);
 };
 
-class Statistics extends Component {
-  render() {
-    // const { good, neutral, bad, total, positivePercentage } = this.props;
+const Statistics = props => {
+  // const { good, neutral, bad, total, positivePercentage } = props;
 
-    const listItems = Object.entries(this.props).map(([key, value], index) => (
+  const listItems = Object.entries(props).map(([key, value], index) => {
+    if (key === 'positivePercentage') {
+      key = 'Positive feedback';
+      value += '%';
+    }
+
+    return (
       <StatListItem key={index}>
         {firstLetterToUpperCase(key)}: {value}
       </StatListItem>
-    ));
+    );
+  });
 
-    return (
-      <>
-        {this.props.total ? (
-          <ul>
-            {listItems}
+  return (
+    <>
+      {props.total ? (
+        <ul>
+          {listItems}
 
-            {/*Simplier alternative*/}
+          {/*Simplier alternative*/}
 
-            {/* <StatListItem>Good: {good}</StatListItem>
+          {/* <StatListItem>Good: {good}</StatListItem>
             <StatListItem>Neutral: {neutral}</StatListItem>
             <StatListItem>Bad: {bad}</StatListItem>
             <StatListItem>Total: {total}</StatListItem>
             <StatListItem>
               Positive feedback: {positivePercentage}%
             </StatListItem> */}
-          </ul>
-        ) : (
-          <Notification message={notificationMsg} />
-        )}
-      </>
-    );
-  }
-}
+        </ul>
+      ) : (
+        <Notification message={notificationMsg} />
+      )}
+    </>
+  );
+};
 
 Statistics.propTypes = {
   good: PropTypes.number.isRequired,
